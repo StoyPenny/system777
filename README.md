@@ -14,9 +14,38 @@ A tabletop arcade casino system built with Next.js. Designed to run as a kiosk o
 
 ## Games
 
-### Slot Machines
-Pick from a collection of themed machines. All share the same mechanics — three reels, match symbols to win.
+### Cards
+| Game | Description |
+|---|---|
+| **Blackjack** | Hit, Stand, or Double vs the dealer. Dealer stands on soft 17. Pays 3:2. |
+| **Baccarat** | Bet Player, Banker, or Tie. Cards dealt to both sides — closest to 9 wins. |
+| **Video Poker** | Jacks or Better, 5-card draw. Hold cards and redraw. Royal Flush pays 800×. |
+| **3-Card Poker** | Ante + Play vs the dealer. Dealer needs Q-high to qualify. |
+| **Red Dog** | Two cards dealt — bet whether the next card falls between them. |
+| **War** | Your card vs the dealer's. High card wins; tie goes to War. |
+| **High Card** | Your card is revealed face-up — bet whether you or the dealer draws higher on the next card. |
+| **Hi-Lo** | Predict if the next card in the deck is higher, lower, or the same. Odds adjust per card. |
 
+### Dice & Numbers
+| Game | Description |
+|---|---|
+| **Crown & Anchor** | Bet on one of 6 symbols. Three dice roll — pays out for each matching face shown. |
+| **Yacht** | Five dice, three rolls. Build Yahtzee-style hands. Yacht (5-of-a-kind) pays 50×. |
+| **Keno** | Pick up to 10 spots, then 20 balls draw. Paid on the number of catches. |
+| **Bingo** | Mark off a 5×5 card as balls are called. Lines and full Blackout pay out. |
+
+### Arcade
+| Game | Description |
+|---|---|
+| **Slots** (5 machines) | Three-reel spinners in themed packs. Two of a kind = 2×, Jackpot = 10×. |
+| **Mines** | Uncover tiles on a grid while avoiding hidden mines. Cash out before you hit one. |
+| **Tower** | Climb a tower floor by floor. Each row has two safe tiles and one trap. |
+| **Horses** | Five horses race down the track. Pick the winner before they're off. |
+
+### Roulette
+European single-zero wheel. Place multiple bets per spin across Red/Black (2×), Odd/Even (2×), Low/High (2×), Dozens (3×), and Green 0 (35×). Tracks recent results with a color history board.
+
+### Slot Machines
 | Machine | Theme |
 |---|---|
 | Classic Fruits | 🍒 The original one-armed bandit |
@@ -24,22 +53,6 @@ Pick from a collection of themed machines. All share the same mechanics — thre
 | Pharaohs Gold | 👑 Ancient riches await |
 | Cocktail Hour | 🍹 Last round — bet it all |
 | Wild Safari | 🦁 Hunt the big five |
-
-Payouts: Two of a kind = **2×**, Jackpot (three matching) = **10×**
-
-### Poker
-| Variant | Description |
-|---|---|
-| Video Poker | Jacks or Better, 5-card draw. Hold cards, draw replacements. Pays up to 800× for Royal Flush. |
-| 3-Card Poker | vs the dealer. Ante up, see 3 cards, fold or play. Dealer needs Q-high to qualify. Mini Royal pays 5× ante bonus. |
-
-### Roulette
-European single-zero roulette with a full bet layout. Tracks recent results with a color history board.
-
-Bet types: Red/Black (2×), Odd/Even (2×), Low/High (2×), 1st/2nd/3rd Dozen (3×), Green 0 (35×)
-
-### Blackjack
-Standard rules vs the dealer. Hit, Stand, or Double Down. Dealer stands on soft 17. Blackjack pays 3:2.
 
 ---
 
@@ -68,11 +81,13 @@ Chips are available between rounds (BetSelector is disabled during active play).
 | `0` | Clear bet |
 
 ### Per-Game Controls
-| Key | Slots | Video Poker | 3-Card Poker | Roulette | Blackjack |
-|---|---|---|---|---|---|
-| `Space` | Spin | Deal / Draw | Deal | Spin | Deal |
-| `1`–`5` | — | Hold card 1–5 | Fold / Play | — | Hit / Stand / Double |
-| `Esc` | Slot picker | Poker menu | Poker menu | Lobby | Lobby |
+| Key | Slots | Video Poker | 3-Card Poker | Roulette | Blackjack | Most others |
+|---|---|---|---|---|---|---|
+| `Space` | Spin | Deal / Draw | Deal | Spin | Deal | Deal / Confirm |
+| `1`–`5` | — | Hold card 1–5 | Fold / Play | — | Hit / Stand / Double | Game action |
+| `1`–`7` | — | — | — | Select chip | — | — |
+| `C` / `0` | — | — | — | Clear bets | — | — |
+| `Esc` | Slot picker | Poker menu | Poker menu | Lobby | Lobby | Lobby |
 
 ---
 
@@ -135,24 +150,31 @@ src/
 │   ├── page.tsx                    # Profile select / PIN login
 │   ├── lobby/page.tsx              # Game picker
 │   └── games/
-│       ├── slots/
-│       │   ├── page.tsx            # Slot machine picker
-│       │   └── [id]/
-│       │       ├── page.tsx        # Server wrapper (resolves machine ID)
-│       │       └── SlotGame.tsx    # Client game component
+│       ├── slots/[id]/             # Slot machines (5 themed machines)
 │       ├── poker/
-│       │   ├── page.tsx            # Poker variant picker
 │       │   ├── video-poker/        # Jacks or Better
 │       │   └── three-card/         # 3-Card Poker vs dealer
-│       ├── roulette/               # European roulette
-│       └── blackjack/              # Standard blackjack
+│       ├── blackjack/
+│       ├── baccarat/
+│       ├── roulette/
+│       ├── reddog/
+│       ├── war/
+│       ├── highcard/
+│       ├── hilo/
+│       ├── crownanchor/
+│       ├── yacht/
+│       ├── keno/
+│       ├── bingo/
+│       ├── mines/
+│       ├── tower/
+│       └── horses/
 ├── components/
 │   ├── BalanceBar.tsx              # Fixed top bar with credits + logout
 │   ├── BetSelector.tsx             # Chip stack bet input
 │   ├── PinPad.tsx                  # 4-digit PIN entry
 │   └── WinEffect.tsx               # Per-game particle win animations
 ├── lib/
-│   ├── slotMachines.ts             # All slot machine configs (add new machines here)
+│   ├── slotMachines.ts             # Slot machine configs (add new machines here)
 │   ├── pokerVariants.ts            # Poker variant registry (add new variants here)
 │   ├── games.ts                    # Roulette wheel data
 │   ├── sounds.ts                   # Web Audio API sound generation

@@ -20,7 +20,38 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: #0a0a0a;
+  color: #ededed;
   font-family: Arial, Helvetica, sans-serif;
+  overscroll-behavior: none;
 }
+
+/* Prevent text selection on game UI */
+.select-none {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ── Win animations ─────────────────────────────────── */
+@keyframes s777-fall {
+  from { transform: translateY(-80px) rotate(0deg) scale(1); opacity: 1; }
+  to   { transform: translateY(110vh)  rotate(600deg) scale(0.6); opacity: 0; }
+}
+@keyframes s777-rise {
+  from { transform: translateY(0px) scale(0.9); opacity: 1; }
+  to   { transform: translateY(-90vh) scale(0.3); opacity: 0; }
+}
+@keyframes s777-burst {
+  0%   { transform: translate(0, 0) scale(0.4); opacity: 1; }
+  80%  { opacity: 0.7; }
+  100% { transform: translate(var(--dx, 0px), var(--dy, 0px)) scale(1.1); opacity: 0; }
+}
+@keyframes s777-flash {
+  0%, 100% { opacity: 0; }
+  15%, 55%  { opacity: 0.22; }
+}
+
+.s777-fall  { animation: s777-fall  linear forwards; }
+.s777-rise  { animation: s777-rise  ease-out forwards; }
+.s777-burst { animation: s777-burst ease-out forwards; }
+.s777-flash { animation: s777-flash ease-in-out forwards; }

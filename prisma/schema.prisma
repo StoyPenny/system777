@@ -1,0 +1,28 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  pin       String
+  balance   Int      @default(1000)
+  createdAt DateTime @default(now())
+  sessions  GameSession[]
+}
+
+model GameSession {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  game      String
+  result    String
+  amount    Int
+  balance   Int
+  createdAt DateTime @default(now())
+}

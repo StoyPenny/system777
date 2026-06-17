@@ -1,0 +1,13 @@
+services:
+  app:
+    build: .
+    ports:
+      - "2413:3000"
+    volumes:
+      - db_data:/app/data
+    environment:
+      - DATABASE_URL=file:/app/data/prod.db
+    restart: unless-stopped
+
+volumes:
+  db_data:

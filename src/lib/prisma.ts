@@ -5,9 +5,8 @@ import path from "path";
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
 function createPrisma() {
-  const adapter = new PrismaLibSql({
-    url: `file:${path.join(process.cwd(), "prisma/dev.db")}`,
-  });
+  const url = process.env.DATABASE_URL ?? `file:${path.join(process.cwd(), "prisma/dev.db")}`;
+  const adapter = new PrismaLibSql({ url });
   return new PrismaClient({ adapter } as ConstructorParameters<typeof PrismaClient>[0]);
 }
 

@@ -2,7 +2,7 @@ services:
   app:
     build: .
     ports:
-      - "2413:3000"
+      - "3777:3000"
     volumes:
       - db_data:/app/data
     environment:
